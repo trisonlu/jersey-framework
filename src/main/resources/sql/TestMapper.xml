@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsq.jersey.dao.TestDao">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.lsq.jersey.dao.po.Test">
+		<!--主键-->
+		<id property="id" column="id" />
+		<!--字符串类型-->
+		<result property="testString" column="test_string" />
+		<!--金额Long类型转换-->
+		<result property="testAmount" column="test_amount" />
+		<!--小数bigdecimal类型转换-->
+		<result property="testDouble" column="test_double" />
+		<!--状态 0 删除 1 初始 2 审核中 3 处理中。。。。-->
+		<result property="testEnum" column="test_enum" />
+		<!--创建时间-->
+		<result property="createTime" column="create_time" />
+		<!--更新时间-->
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	id,	test_string,	test_amount,	test_double,	test_enum,	create_time,	update_time
+	</sql>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultType="com.lsq.jersey.dao.po.Test" parameterType="java.lang.Long">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_test_
+		 WHERE id = #{id}
+	</select>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<select id="selectFilter" resultType="com.lsq.jersey.dao.po.Test" parameterType="com.lsq.jersey.api.request.TestRequest">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_test_
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id}
+			</if>
+			<if test="testString != null">
+				 and test_string = #{testString}
+			</if>
+			<if test="testAmount != null">
+				 and test_amount = #{testAmount}
+			</if>
+			<if test="testDouble != null">
+				 and test_double = #{testDouble}
+			</if>
+			<if test="testEnum != null">
+				 and test_enum = #{testEnum}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime}
+			</if>
+
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		 DELETE FROM t_test_
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.lsq.jersey.dao.po.Test">
+		 INSERT INTO t_test_
+ 		(id,test_string,test_amount,test_double,test_enum,create_time,update_time) 
+		 VALUES 
+ 		(#{id},#{testString},#{testAmount},#{testDouble},#{testEnum},#{createTime},#{updateTime}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertGetId" useGeneratedKeys="true" keyProperty="id" parameterType="com.lsq.jersey.api.request.TestRequest">
+		 INSERT INTO t_test_
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="testString != null">
+				 test_string,
+			</if>
+			<if test="testAmount != null">
+				 test_amount,
+			</if>
+			<if test="testDouble != null">
+				 test_double,
+			</if>
+			<if test="testEnum != null">
+				 test_enum,
+			</if>
+			<if test="createTime != null">
+				 create_time,
+			</if>
+			<if test="updateTime != null">
+				 update_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="testString!=null">
+				 #{testString},
+			</if>
+			<if test="testAmount!=null">
+				 #{testAmount},
+			</if>
+			<if test="testDouble!=null">
+				 #{testDouble},
+			</if>
+			<if test="testEnum!=null">
+				 #{testEnum},
+			</if>
+			<if test="createTime!=null">
+				 #{createTime},
+			</if>
+			<if test="updateTime!=null">
+				 #{updateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.lsq.jersey.api.request.TestRequest">
+		 INSERT INTO t_test_
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="testString != null">
+				 test_string,
+			</if>
+			<if test="testAmount != null">
+				 test_amount,
+			</if>
+			<if test="testDouble != null">
+				 test_double,
+			</if>
+			<if test="testEnum != null">
+				 test_enum,
+			</if>
+			<if test="createTime != null">
+				 create_time,
+			</if>
+			<if test="updateTime != null">
+				 update_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="testString!=null">
+				 #{testString},
+			</if>
+			<if test="testAmount!=null">
+				 #{testAmount},
+			</if>
+			<if test="testDouble!=null">
+				 #{testDouble},
+			</if>
+			<if test="testEnum!=null">
+				 #{testEnum},
+			</if>
+			<if test="createTime!=null">
+				 #{createTime},
+			</if>
+			<if test="updateTime!=null">
+				 #{updateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.lsq.jersey.dao.po.Test">
+		 UPDATE t_test_
+ 		 <set> 
+			<if test="testString != null">
+				 test_string = #{testString},
+			</if>
+			<if test="testAmount != null">
+				 test_amount = #{testAmount},
+			</if>
+			<if test="testDouble != null">
+				 test_double = #{testDouble},
+			</if>
+			<if test="testEnum != null">
+				 test_enum = #{testEnum},
+			</if>
+			<if test="createTime != null">
+				 create_time = #{createTime},
+			</if>
+			<if test="updateTime != null">
+				 update_time = #{updateTime},
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="com.lsq.jersey.dao.po.Test">
+		 UPDATE t_test_
+		 SET 
+			 test_string = #{testString},
+			 test_amount = #{testAmount},
+			 test_double = #{testDouble},
+			 test_enum = #{testEnum},
+			 create_time = #{createTime},
+			 update_time = #{updateTime}
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 添加 -->
+	<insert id="batchInsertOrUpdate" parameterType="java.util.List">
+		 INSERT INTO t_test_ (<include refid="Base_Column_List" />) 
+		 VALUES 
+		 <foreach collection="list" item="item" index="index" separator=","> 
+			 (#{item.id},
+			 #{item.testString},
+			 #{item.testAmount},
+			 #{item.testDouble},
+			 #{item.testEnum},
+			 #{item.createTime},
+			 #{item.updateTime}) 
+		 </foreach>
+		 ON DUPLICATE KEY UPDATE 
+		 test_string = VALUES(test_string),
+		 test_amount = VALUES(test_amount),
+		 test_double = VALUES(test_double),
+		 test_enum = VALUES(test_enum),
+		 create_time = VALUES(create_time),
+		 update_time = VALUES(update_time)
+	</insert>
+
+</mapper>
