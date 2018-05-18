@@ -3,6 +3,7 @@ package com.lsq.jersey.provider;
 import com.lsq.jersey.dao.po.Test;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.json.JSONJAXBContext;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
@@ -15,6 +16,7 @@ import java.util.Set;
  * Created by trison on 2018/5/14.
  */
 @Provider
+@Slf4j
 public class JAXBContextResolver implements ContextResolver<JAXBContext> {
 
     private final JAXBContext jaxbContext;
@@ -31,10 +33,12 @@ public class JAXBContextResolver implements ContextResolver<JAXBContext> {
     public JAXBContextResolver() throws Exception {
         this.resultTypes = new HashSet<Class>(Arrays.asList(resultTypeArray));
         this.jaxbContext = new JSONJAXBContext(JSONConfiguration.natural().build(), resultTypeArray);
+        log.info(String.format("getContext:%s", jaxbContext));
     }
 
     @Override
     public JAXBContext getContext(Class<?> aClass) {
+        log.info(String.format("getContext:%s", aClass));
         return resultTypes.contains(aClass) ? jaxbContext : null;
     }
 }

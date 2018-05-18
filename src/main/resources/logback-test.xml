@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+根节点<configuration>，包含下面三个属性：
+　　　　scan: 当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+　　　　scanPeriod: 设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+　　　　debug: 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="http://www.padual.com/java/logback.xsd"
+               scan="true" scanPeriod = "60 seconds" debug="false">
+    <!--子节点<property>	：用来定义变量值，它有两个属性name和value，通过<property>定义的值会被插入到logger上下文中，可以使“${}”来使用变量-->
+    <property name="logDir" value="/data1/logs/java_release/jersey-framework/logs" />
+    <!--子节点<timestamp>：获取时间戳字符串-->
+    <timestamp key="bySecond" datePattern = "yyyyMMdd'T'HHmmss"/>
+    <!--子节点<contextName>：用来设置上下文名称，每个logger都关联到logger上下文，默认上下文名称为default。但可以使用<contextName>设置成其他名字，用于区分不同应用程序的记录。一旦设置，不能修改-->
+    <contextName>JerseyFramework-${bySecond}</contextName>
+
+<!--    -X号: X信息输出时左对齐；
+    %p: 输出日志信息优先级，即DEBUG，INFO，WARN，ERROR，FATAL,
+    %d: 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式，比如：%d{yyy MMM dd HH:mm:ss,SSS}，输出类似：2002年10月18日 22：10：28，921
+    %r: 输出自应用启动到输出该log信息耗费的毫秒数
+    %c: 输出日志信息所属的类目，通常就是所在类的全名
+    %t: 输出产生该日志事件的线程名
+    %l: 输出日志事件的发生位置，相当于%C.%M(%F:%L)的组合,包括类目名、发生的线程，以及在代码中的行数。举例：Testlog4.main (TestLog4.java:10)
+    %x: 输出和当前线程相关联的NDC(嵌套诊断环境),尤其用到像Java servlets这样的多客户多线程的应用中。
+    %%: 输出一个”%”字符
+    %F: 输出日志消息产生时所在的文件名称
+    %L: 输出代码中的行号
+    %m: 输出代码中指定的消息,产生的日志具体信息
+    %n: 输出一个回车换行符，Windows平台为”\r\n”，Unix平台为”\n”输出日志信息换行 -->
+    <!--子节点<appender>：负责写日志的组件，它有两个必要属性name和class。name指定appender名称，class指定appender的全限定名-->
+    <!--ConsoleAppender 把日志输出到控制台-->
+    <appender name ="Console" class = "ch.qos.logback.core.ConsoleAppender">
+        <!--<encoder>：对日志进行格式化-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%X{sessionId} %p [%t] %d{yyyy-MM-dd HH:mm:ss.SSS} %c.%M:%L - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--RollingFileAppender：滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件
+    <rollingPolicy>:当发生滚动时，决定RollingFileAppender的行为，涉及文件移动和重命名。属性class定义具体的滚动策略类
+　　　　　　class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"： 最常用的滚动策略，它根据时间来制定滚动策略，既负责滚动也负责出发滚动。有以下子节点：
+　　　　　　　　<fileNamePattern>：必要节点，包含文件名及“%d”转换符，“%d”可以包含一个java.text.SimpleDateFormat指定的时间格式，如：%d{yyyy-MM}。
+如果直接使用 %d，默认格式是 yyyy-MM-dd。RollingFileAppender的file字节点可有可无，通过设置file，可以为活动文件和归档文件指定不同位置，当前日志总是记录到file指定的文件（活动文件），活动文件的名字不会改变；
+如果没设置file，活动文件的名字会根据fileNamePattern 的值，每隔一段时间改变一次。“/”或者“\”会被当做目录分隔符。
+　　　　　　　　<maxHistory>:
+可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件。假设设置每个月滚动，且<maxHistory>是6，则只保存最近6个月的文件，删除之前的旧文件。注意，删除旧文件是，那些为了归档而创建的目录也会被删除。
+
+　　　　　　class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"： 查看当前活动文件的大小，如果超过指定大小会告知RollingFileAppender 触发当前活动文件滚动。只有一个节点:
+　　　　　　　　<maxFileSize>:这是活动文件的大小，默认值是10MB-->
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/jersey-framework-%d{yyyyMMdd}-%i.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>512MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%X{sessionId} %p [%t] %d{yyyy-MM-dd HH:mm:ss.SSS} %c.%M:%L - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--子节点<logger>：用来设置某一个包或具体的某一个类的日志打印级别、以及指定<appender>。<logger>仅有一个name属性，一个可选的level和一个可选的addtivity属性。
+可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个logger
+　　　　name: 用来指定受此logger约束的某一个包或者具体的某一个类。
+　　　　level: 用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL和OFF，还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。 如果未设置此属性，那么当前logger将会继承上级的级别。
+addtivity: 是否向上级logger传递打印信息。默认是true。同<logger>一样，可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个logger-->
+    <logger name="com.lsq.jersey" level="info"/>
+    <logger name="com.sun.jersey" additivity="true" level="info"/>
+    <logger name="java.util.logging" additivity="true" level="info"/>
+    <logger name="org.mybatis" additivity="true" level="info"/>
+    <logger name="org.apache" additivity="true" level="info"/>
+    <logger name="java.sql.Connection" additivity="true" level="info"/>
+    <logger name="java.sql.Statement" additivity="true" level="info"/>
+    <logger name="java.sql.PreparedStatement" additivity="true" level="info"/>
+    <logger name="java.sql.ResultSet" additivity="true" level="info"/>
+    <logger name="com.zaxxer.hikari" additivity="true" level="info"/>
+
+    <!--子节点<root>:它也是<logger>元素，但是它是根logger,是所有<logger>的上级。只有一个level属性，因为name已经被命名为"root",且已经是最上级了。
+　　　　level: 用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL和OFF，不能设置为INHERITED或者同义词NULL。 默认是DEBUG。-->
+    <!--级别排序为： TRACE < DEBUG < INFO < WARN < ERROR-->
+    <root level="info">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="RollingFile"/>
+    </root>
+
+</configuration>

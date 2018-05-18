@@ -2,6 +2,7 @@ package com.lsq.jersey.facade;
 
 import com.lsq.jersey.dao.po.Test;
 import com.lsq.jersey.service.TestService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import javax.ws.rs.Produces;
  */
 @Path("/test")
 @Component
+@Slf4j
 public class TestFacade {
 
     @Autowired
@@ -24,7 +26,7 @@ public class TestFacade {
     @Path("/id/{id}")
     @Produces("application/json")
     public Test selectByPrimaryKey(@PathParam("id") Long id) {
-        testService.selectByPrimaryKey(id);
-        return new Test();
+        log.info("id:{}", id);
+        return testService.selectByPrimaryKey(id);
     }
 }
