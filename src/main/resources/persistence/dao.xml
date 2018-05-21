@@ -4,15 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
   http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="applicationPropertyPlaceholder"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:properties/jdbc.properties</value>
-            </list>
-        </property>
-    </bean>
-
     <!-- hikari datasource 配置项 -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg>

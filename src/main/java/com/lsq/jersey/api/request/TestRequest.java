@@ -1,6 +1,11 @@
 package com.lsq.jersey.api.request;
 
+import com.lsq.jersey.api.page.Page;
 import lombok.Data;
+import org.springframework.stereotype.Component;
+
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
@@ -9,7 +14,8 @@ import lombok.Data;
  * 
  **/
 @Data
-public class TestRequest {
+@XmlRootElement
+public class TestRequest extends Page{
 
     /** 主键 **/
     private Long id;

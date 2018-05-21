@@ -1,6 +1,5 @@
 package com.lsq.jersey.provider;
 
-import com.lsq.jersey.api.response.Response;
 import com.lsq.jersey.dao.po.Test;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.json.JSONJAXBContext;

@@ -1,5 +1,8 @@
 package com.lsq.jersey.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.lsq.jersey.api.page.PageResult;
 import com.lsq.jersey.dao.po.Test;
 import com.lsq.jersey.dao.TestDao;
 import com.lsq.jersey.service.TestService;
@@ -69,4 +72,8 @@ public class TestServiceImpl implements TestService {
     }
     /********************************* 自动生成器代码end ********************************************/
 
+    public PageResult selectPage(TestRequest test) {
+        PageHelper.startPage(test.getPageNum(), test.getPageSize());
+        return PageResult.renderPageHelper(new PageInfo<Test>(selectFilter(test)));
+    }
 }
