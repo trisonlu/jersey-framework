@@ -1,5 +1,6 @@
 package com.lsq.jersey.dao.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,9 +31,11 @@ public class Test {
     private Integer testEnum;
 
     /** 创建时间 **/
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private java.util.Date createTime;
 
     /** 更新时间 **/
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private java.util.Date updateTime;
 
 

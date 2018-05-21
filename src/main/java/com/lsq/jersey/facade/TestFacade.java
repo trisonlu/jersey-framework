@@ -1,6 +1,7 @@
 package com.lsq.jersey.facade;
 
-import com.lsq.jersey.dao.po.Test;
+import com.lsq.jersey.api.response.Response;
+import com.lsq.jersey.api.response.ResponseStatusEnum;
 import com.lsq.jersey.service.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class TestFacade {
     @GET
     @Path("/id/{id}")
     @Produces("application/json")
-    public Test selectByPrimaryKey(@PathParam("id") Long id) {
+    public Response selectByPrimaryKey(@PathParam("id") Long id) {
         log.info("id:{}", id);
-        return testService.selectByPrimaryKey(id);
+        return Response.renderResponse(ResponseStatusEnum.SUCCESS, testService.selectByPrimaryKey(id));
     }
 }
