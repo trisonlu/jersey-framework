@@ -2,7 +2,6 @@ package com.lsq.jersey.api.request;
 
 import com.lsq.jersey.api.page.Page;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 
 import javax.xml.bind.annotation.XmlRootElement;
