@@ -1,15 +1,14 @@
 package com.lsq.jersey.api.page;
 
+import com.lsq.jersey.config.CustomPropertiesConfigurer;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
+
 
 /**
  * Created by trison on 2018/5/21.
  */
 @Data
 public class Page {
-    @Value("${page.defaultPageNum:''}")
-    private int pageNum;
-    @Value("${page.defaultPageSize:''}")
-    private int pageSize;
+    private int pageNum = Integer.valueOf(CustomPropertiesConfigurer.getCtxProp("page.defaultPageNum"));
+    private int pageSize = Integer.valueOf(CustomPropertiesConfigurer.getCtxProp("page.defaultPageSize"));
 }

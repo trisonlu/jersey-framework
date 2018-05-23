@@ -3,6 +3,7 @@ package com.lsq.jersey.facade;
 import com.lsq.jersey.api.request.TestRequest;
 import com.lsq.jersey.api.response.Response;
 import com.lsq.jersey.api.response.ResponseStatusEnum;
+import com.lsq.jersey.config.PropertiesConfig;
 import com.lsq.jersey.service.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/test")
 @Component
 @Slf4j
-public class TestFacade {
+public class TestFacade{
 
     @Autowired
     private TestService testService;
+
+    @Autowired
+    private PropertiesConfig propertiesConfig;
 
     @GET
     @Path("/id/{id}")
