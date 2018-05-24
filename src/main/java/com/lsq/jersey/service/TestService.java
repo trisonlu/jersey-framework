@@ -1,6 +1,7 @@
 package com.lsq.jersey.service;
 
 import com.lsq.jersey.api.page.PageResult;
+import com.lsq.jersey.api.response.Response;
 import com.lsq.jersey.dao.po.Test;
 import com.lsq.jersey.api.request.TestRequest;
 import java.util.List;
@@ -44,4 +45,6 @@ public interface TestService {
     /********************************* 自动生成器代码end ********************************************/
 
     public PageResult selectPage(TestRequest test);
+
+    public Response testTransactional();
 }
