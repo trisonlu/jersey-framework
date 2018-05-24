@@ -4,12 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lsq.jersey.api.page.PageResult;
 import com.lsq.jersey.api.response.Response;
+import com.lsq.jersey.api.response.ResponseStatusEnum;
 import com.lsq.jersey.dao.po.Test;
 import com.lsq.jersey.dao.TestDao;
 import com.lsq.jersey.service.TestService;
 import com.lsq.jersey.api.request.TestRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -79,7 +83,18 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Response testTransactional() {
-        return null;
+    @Transactional(rollbackFor = Exception.class)
+    public Response testTransactional(){
+        Test test = new Test();
+        test.setId(1L);
+        test.setTestString("我勒个ca");
+        updateByPrimaryKeySelective(test);
+
+        TestRequest request = new TestRequest();
+        request.setId(4L);
+        request.setTestString("12");
+        insertSelective(request);
+
+        return Response.renderResponse(ResponseStatusEnum.SUCCESS, true);
     }
 }

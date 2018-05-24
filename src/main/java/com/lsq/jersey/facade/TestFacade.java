@@ -43,4 +43,16 @@ public class TestFacade{
         return Response.renderResponse(ResponseStatusEnum.SUCCESS, testService.selectPage(test));
     }
 
+    @POST
+    @Path("/transaction/test")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces("application/json")
+    public Response testTransactional() {
+        try {
+            return testService.testTransactional();
+        } catch (Exception e) {
+            return Response.renderResponse(ResponseStatusEnum.SERVER_ERROR, e);
+        }
+    }
+
 }
